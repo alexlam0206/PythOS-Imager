@@ -7,9 +7,4 @@
 .DS_Store
 
 # Development files
-PROMPT.txt
-GEMINI.md
-npm.md
-
-#.gitignore
-.gitignore
+/DEVELOPMENT
