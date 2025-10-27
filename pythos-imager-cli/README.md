@@ -4,13 +4,17 @@ A command-line tool to download and flash OS images.
 
 ## Installation
 
-To install the CLI tool, clone the repository and run the following command from within the `pythos-imager-cli` directory:
+You can install the CLI tool via npm:
+
+```bash
+npm install pythos-imager
+```
+
+Alternatively, you can clone the repository and run the following command from within the `pythos-imager-cli` directory to install it locally:
 
 ```bash
 npm install -g .
 ```
-
-This will install the `pythos-imager` command globally on your system.
 
 ## Configuration
 

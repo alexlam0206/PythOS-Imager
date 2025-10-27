@@ -48,10 +48,8 @@ The PythOS Imager CLI is a command-line tool built with Node.js.
 To install the CLI tool, you need to have Node.js and npm installed. Then, navigate to the `pythos-imager-cli` directory and run the following command:
 
 ```bash
-npm install -g .
+npm install pythos-imager
 ```
-
-This will install the `pythos-imager` command globally on your system.
 
 ### Commands
 
@@ -66,5 +64,5 @@ This will install the `pythos-imager` command globally on your system.
 For detailed usage instructions, please refer to the `README.md` file inside the `pythos-imager-cli` directory.
 
 ---
-This project is designed for [PythOS](github.com/milo1004/PythonOS).
+This project is designed for [PythOS](https://github.com/milo1004/PythonOS).
 Under [License](/LICENSE)

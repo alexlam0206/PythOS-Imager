@@ -3,12 +3,35 @@
 import { Command } from 'commander';
 import { listISOs, downloadISO, flashImage, verifyImage, listDrives } from '../lib/utils.js';
 import chalk from 'chalk';
+import { createRequire } from 'module';
+import latestVersion from 'latest-version';
+import boxen from 'boxen';
+
+const require = createRequire(import.meta.url);
+const pkg = require('../package.json');
 
 const program = new Command();
 
 program
   .name('pythos-imager')
-  .description('CLI tool to download and flash OS images.');
+  .description('CLI tool to download and flash OS images.')
+  .version(pkg.version, '-v, --version', 'output the current version')
+  .hook('preAction', async (thisCommand, actionCommand) => {
+    if (actionCommand.name() === 'version') {
+      return;
+    }
+    const latest = await latestVersion(pkg.name);
+    if (pkg.version !== latest) {
+      console.log(boxen(`Update available ${chalk.dim(pkg.version)} → ${chalk.green(latest)}
+Run ${chalk.cyan(`npm i -g ${pkg.name}`)} to update`, {
+        padding: 1,
+        margin: 1,
+        borderStyle: 'round',
+        textAlignment: 'center',
+        borderColor: 'yellow'
+      }));
+    }
+  });
 
 const ls = program.command('ls')
     .description('List available images or drives.')
