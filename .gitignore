@@ -10,3 +10,6 @@
 PROMPT.txt
 GEMINI.md
 npm.md
+
+#.gitignore
+.gitignore
