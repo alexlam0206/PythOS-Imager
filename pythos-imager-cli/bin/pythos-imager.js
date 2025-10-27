@@ -2,6 +2,7 @@
 
 import { Command } from 'commander';
 import { listISOs, downloadISO, flashImage, verifyImage, listDrives } from '../lib/utils.js';
+import chalk from 'chalk';
 
 const program = new Command();
 
@@ -12,7 +13,7 @@ program
 const ls = program.command('ls')
     .description('List available images or drives.')
     .action(() => {
-        console.log('Please specify `drive` or `image`. e.g. `pythos-imager ls drive`');
+        console.log(chalk.yellow('Please specify `drive` or `image`. e.g. `pythos-imager ls drive`'));
     });
 
 ls

@@ -6,6 +6,7 @@ import { createHash } from 'crypto';
 import si from 'systeminformation';
 import readline from 'readline';
 import { spawn } from 'child_process';
+import chalk from 'chalk';
 
 const API_URL = 'https://pythos.pages.dev/api/images.json';
 
@@ -40,7 +41,7 @@ export async function listISOs() {
     console.log(`   Version: ${iso.version}`);
     console.log(`   Description: ${iso.description}`);
   });
-  console.log('\nTo flash to drive, run `pythos-imager download <ISO Name or Version>` and then `pythos-imager flash <ISO Name or Version> --drive <drive-path>`');
+  console.log(chalk.yellow('\nTo flash to drive, run `pythos-imager download <ISO Name or Version>` and then `pythos-imager flash <ISO Name or Version> --drive <drive-path>`'));
 }
 
 export async function listDrives() {
@@ -62,8 +63,8 @@ export async function listDrives() {
     });
 
     if (process.platform === 'darwin') {
-        console.log('\nOn macOS, you should use the whole disk device for flashing (e.g., /dev/diskX, not /dev/diskXsY).');
-        console.log('You can find the correct device name by running `diskutil list` in your terminal.');
+        console.log(chalk.yellow('\nOn macOS, you should use the whole disk device for flashing (e.g., /dev/diskX, not /dev/diskXsY).'));
+        console.log(chalk.yellow('You can find the correct device name by running `diskutil list` in your terminal.'));
     }
 }
 
@@ -71,7 +72,7 @@ export function downloadISO(nameOrVersion) {
     return new Promise(async (resolve, reject) => {
         const iso = await findISO(nameOrVersion);
         if (!iso) {
-            console.error('ISO not found.');
+            console.error(chalk.red('ISO not found.'));
             return reject(new Error('ISO not found.'));
         }
 
@@ -104,12 +105,12 @@ export function downloadISO(nameOrVersion) {
 
             fileStream.on('error', (err) => {
                 progressBar.stop();
-                spinner.fail(`Error writing to file: ${err.message}`);
+                spinner.fail(chalk.red(`Error writing to file: ${err.message}`));
                 reject(err);
             });
 
         } catch (error) {
-            spinner.fail(`Error: ${error.message}`);
+            spinner.fail(chalk.red(`Error: ${error.message}`));
             reject(error);
         }
     });
@@ -119,12 +120,12 @@ export function flashImage(nameOrVersion, drivePath) {
     return new Promise(async (resolve, reject) => {
         const iso = await findISO(nameOrVersion);
         if (!iso) {
-            console.error('ISO not found.');
+            console.error(chalk.red('ISO not found.'));
             return reject(new Error('ISO not found.'));
         }
         const fileName = iso.url.split('/').pop();
         if (!existsSync(fileName)) {
-            console.error(`Image file not found: ${fileName}. Please download it first with 'pythos-imager download "${nameOrVersion}"'`);
+            console.error(chalk.red(`Image file not found: ${fileName}. Please download it first with 'pythos-imager download "${nameOrVersion}"'`));
             return reject(new Error('Image file not found.'));
         }
 
@@ -132,8 +133,8 @@ export function flashImage(nameOrVersion, drivePath) {
         if (process.platform === 'darwin') {
             if (/s\d+$/.test(drivePath)) {
                 const wholeDisk = drivePath.replace(/s\d+$/, '');
-                console.warn(`\nWarning: You are trying to flash a partition. It is recommended to use the whole disk device (${wholeDisk}).`);
-                console.warn(`The tool will attempt to use ${wholeDisk} instead.`);
+                console.warn(chalk.yellow(`\nWarning: You are trying to flash a partition. It is recommended to use the whole disk device (${wholeDisk}).`));
+                console.warn(chalk.yellow(`The tool will attempt to use ${wholeDisk} instead.`));
                 rawDevicePath = wholeDisk;
             }
             // Using /dev/rdisk is faster on macOS for raw disk access
@@ -144,7 +145,7 @@ export function flashImage(nameOrVersion, drivePath) {
 
         const command = ['dd', `if=${fileName}`, `of=${rawDevicePath}`, 'bs=4m', 'status=progress'];
         console.log(`About to run: sudo ${command.join(' ')}`);
-        console.log(`This will erase all data on ${rawDevicePath}.`);
+        console.log(chalk.red(`This will erase all data on ${rawDevicePath}.`));
 
         const rl = readline.createInterface({
             input: process.stdin,
@@ -163,7 +164,7 @@ export function flashImage(nameOrVersion, drivePath) {
 
             unmount.on('close', (unmountCode) => {
                 if (unmountCode !== 0) {
-                    console.warn(`Could not unmount ${rawDevicePath}. Flashing may fail.`);
+                    console.warn(chalk.yellow(`Could not unmount ${rawDevicePath}. Flashing may fail.`));
                 }
 
                 const child = spawn('sudo', command, { stdio: 'inherit' });
@@ -186,7 +187,7 @@ export function verifyImage(imagePath, nameOrVersion) {
     return new Promise(async (resolve, reject) => {
         const iso = await findISO(nameOrVersion);
         if (!iso || !iso.sha256) {
-            console.log(`No SHA256 hash available for ${nameOrVersion}. Skipping verification.`);
+            console.log(chalk.yellow(`No SHA256 hash available for ${nameOrVersion}. Skipping verification.`));
             return resolve();
         }
 
@@ -204,13 +205,13 @@ export function verifyImage(imagePath, nameOrVersion) {
                 spinner.succeed('Verification successful.');
                 resolve();
             } else {
-                spinner.fail('Verification failed: Hashes do not match.');
+                spinner.fail(chalk.red('Verification failed: Hashes do not match.'));
                 reject(new Error('Verification failed.'));
             }
         });
 
         stream.on('error', (err) => {
-            spinner.fail(`Error reading file: ${err.message}`);
+            spinner.fail(chalk.red(`Error reading file: ${err.message}`));
             reject(err);
         });
     });
