@@ -15,7 +15,8 @@
     "flash",
     "PythOS",
     "PythonOS",
-    "Python"
+    "Python",
+    "OS"
   ],
   "author": "",
   "license": "MIT",
