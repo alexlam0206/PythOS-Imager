@@ -14,67 +14,47 @@ This will install the `pythos-imager` command globally on your system.
 
 ## Configuration
 
-The list of available ISOs is defined in the `isos` array in `lib/utils.js`. You can edit this file to add or remove ISOs.
-
-The `isos` array should have the following format:
-
-```json
-[
-  {
-    "name": "PythOS 6.0 NewCore",
-    "url": "https://pythos.dev/images/pythos-6.0.iso",
-    "sha256": "..."
-  },
-  {
-    "name": "Ubuntu 24.04 LTS",
-    "url": "https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso",
-    "sha256": "..."
-  }
-]
-```
+The list of available ISOs is fetched from `https://pythos.pages.dev/api/images.json`.
 
 ## Commands
 
-Here are the available commands:
+| Command | Alias | Description |
+| :--- | :--- | :--- |
+| `ls drive` | `ls d` | Lists the available drives. |
+| `ls image` | `ls i` | Lists the available images. |
+| `pull <name-or-version>` | `p` | Downloads and verifies the specified ISO. |
+| `flash <name-or-version> --drive <drive-path>` | `f` | Flashes a downloaded image to a drive. |
+| `verify <name-or-version> --file <image-path>` | `v` | Verifies the integrity of a downloaded image file. |
 
-### `pythos-imager list`
+### Usage Examples
 
-Lists the available ISOs.
-
-**Usage:**
-
+**List Drives**
 ```bash
-pythos-imager list
+pythos-imager ls drive
+pythos-imager ls d
 ```
 
-### `pythos-imager download <iso-name>`
-
-Downloads and verifies the specified ISO.
-
-**Usage:**
-
+**List Images**
 ```bash
-pythos-imager download "PythOS 6.0 NewCore"
+pythos-imager ls image
+pythos-imager ls i
 ```
 
-### `pythos-imager flash <image-path> --drive <drive-path>`
-
-Flashes the specified image file to a drive. This command requires `sudo` privileges and will prompt for your password.
-
-**Usage:**
-
+**Download and Verify an ISO**
 ```bash
-pythos-imager flash ./pythos-6.0.iso --drive /dev/sdb
+pythos-imager pull "PythOS 6.1 Beta x86_64"
+pythos-imager p 6.1-beta
 ```
 
+**Flash an Image**
+```bash
+pythos-imager flash "PythOS 6.1 Beta x86_64" --drive /dev/sdb
+pythos-imager f 6.1-beta -d /dev/sdb
+```
 **Warning:** This is a destructive operation and will erase all data on the specified drive.
 
-### `pythos-imager verify <iso-name> --file <image-path>`
-
-Verifies the integrity of a downloaded image file by checking its SHA256 hash against the one specified in the `isos` array.
-
-**Usage:**
-
+**Verify an Image**
 ```bash
-pythos-imager verify "PythOS 6.0 NewCore" --file ./pythos-6.0.iso
+pythos-imager verify "PythOS 6.1 Beta x86_64" --file ./PythOS6.1-x86_64-beta.iso
+pythos-imager v 6.1-beta --file ./PythOS6.1-x86_64-beta.iso
 ```

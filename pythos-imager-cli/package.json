@@ -1,7 +1,7 @@
 {
   "name": "pythos-imager",
   "version": "1.0.0",
-  "description": "A CLI tool to flash OS images.",
+  "description": "A CLI tool to flash PythOS and other custom images.",
   "main": "lib/utils.js",
   "bin": {
     "pythos-imager": "./bin/pythos-imager.js"
@@ -12,16 +12,19 @@
   "keywords": [
     "cli",
     "imager",
-    "flash"
+    "flash",
+    "PythOS",
+    "PythonOS",
+    "Python"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "cli-progress": "^3.12.0",
     "commander": "^14.0.2",
     "node-fetch": "^3.3.2",
     "ora": "^9.0.0",
-    "sudo-js": "^1.0.2"
+    "systeminformation": "^5.27.11"
   }
 }

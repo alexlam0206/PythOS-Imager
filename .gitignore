@@ -1,0 +1,12 @@
+# Node.js
+/pythos-imager-cli/node_modules
+*.iso
+*.zip
+
+# macOS
+.DS_Store
+
+# Development files
+PROMPT.txt
+GEMINI.md
+npm.md
