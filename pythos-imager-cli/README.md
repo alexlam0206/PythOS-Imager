@@ -58,3 +58,10 @@ pythos-imager f 6.1-beta -d /dev/sdb
 pythos-imager verify "PythOS 6.1 Beta x86_64" --file ./PythOS6.1-x86_64-beta.iso
 pythos-imager v 6.1-beta --file ./PythOS6.1-x86_64-beta.iso
 ```
+
+---
+
+## Contributing
+
+Have questions, suggestions, or want to contribute? Feel free to open an issue or a pull request on our [GitHub repository](https://github.com/alexlam0206/PythOS-Imager/issues).
+
