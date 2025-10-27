@@ -65,4 +65,4 @@ For detailed usage instructions, please refer to the `README.md` file inside the
 
 ---
 This project is designed for [PythOS](https://github.com/milo1004/PythonOS).
-Under [License](/LICENSE)
+Under [MIT License](/LICENSE)
